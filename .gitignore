@@ -1,0 +1,4 @@
+.DS_Store
+.idea
+dc*.yaml
+docker-compose*.yaml

@@ -5,18 +5,18 @@ pipeline {
         string(defaultValue: 'True', description: '"True": initial cleanup: remove container and volumes; otherwise leave empty', name: 'start_clean')
         string(description: '"True": "Set --nocache for docker build; otherwise leave empty', name: 'nocache')
         string(description: '"True": push docker image after build; otherwise leave empty', name: 'pushimage')
-        string(description: '"True": keep running after test; otherwise leave empty to delete container and volumes', name: 'keep_running')
     }
 
     stages {
         stage('Build') {
             steps {
                 sh '''#!/bin/bash
+                    cp docker-compose.yaml.default docker-compose.yaml
                     [[ "$nocache" ]] && nocacheopt='-c' && echo 'build with option nocache'
                     export MANIFEST_SCOPE='local'
                     export PROJ_HOME='.'
-                    ./dcshell/build $nocacheopt
-                    echo "=== build completed with rc $?"
+                    ./dcshell/build -f docker-compose.yaml $nocacheopt || \
+                        echo "=== build failed with rc $?"
                 '''
             }
         }
@@ -30,7 +30,7 @@ pipeline {
                     echo "  Docker default registry: $default_registry"
                     export MANIFEST_SCOPE='local'
                     export PROJ_HOME='.'
-                    ./dcshell/build -P
+                    ./dcshell/build -f docker-compose.yaml -P
                 '''
             }
         }
@@ -42,7 +42,7 @@ pipeline {
                     echo "Keep container running"
                 else
                     echo 'Remove container, volumes'
-                    docker-compose rm --force -v 2>/dev/null || true
+                    docker-compose -f docker-compose.yaml rm --force -v 2>/dev/null || true
                     docker rm --force -v shibsp 2>/dev/null || true  # in case docker-compose fails ..
                 fi
             '''

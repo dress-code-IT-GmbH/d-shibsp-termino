@@ -3,8 +3,8 @@ pipeline {
     options { disableConcurrentBuilds() }
     parameters {
         string(defaultValue: 'True', description: '"True": initial cleanup: remove container and volumes; otherwise leave empty', name: 'start_clean')
-        string(description: '"True": "Set --nocache for docker build; otherwise leave empty', name: 'nocache')
-        string(description: '"True": push docker image after build; otherwise leave empty', name: 'pushimage')
+        string(defaultValue: '', description: '"True": "Set --nocache for docker build; otherwise leave empty', name: 'nocache')
+        string(defaultValue: '', description: '"True": push docker image after build; otherwise leave empty', name: 'pushimage')
     }
 
     stages {

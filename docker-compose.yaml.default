@@ -3,7 +3,7 @@ services:
   shibsp:
     build:
       context: .
-    image: r2h2/shibsp-termino
+    image: local/shibsp-termino
     container_name: termino
     hostname: termino
     restart: unless-stopped

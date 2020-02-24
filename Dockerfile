@@ -1,9 +1,10 @@
-FROM r2h2/shibsp
+FROM local/shibsp
 
 # Upgrade to PHP 7
-RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
+RUN yum -y install epel-release \
+ && yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
  && yum -y install yum-utils \
- && yum-config-manager --enable remi-php72 \
+ && yum-config-manager --enable remi-php73 \
  && yum -y clean all
 
 # install php modules for Termino application (based on Drupal)

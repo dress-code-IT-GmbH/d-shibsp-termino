@@ -23,8 +23,8 @@ services:
         - /opt/dv/shibsp.run_httpd:/run/httpd:Z
         - /opt/dv/shibsp.var_log:/var/log:Z
         - /opt/dv/shibsp.var_www:/var/www:Z
-    cap_drop:
-      - ALL
+    #cap_drop:
+    #  - ALL
     cap_add:
       - dac_override
       - setuid
